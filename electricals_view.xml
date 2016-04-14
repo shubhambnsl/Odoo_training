@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding= "utf-8"?>
+
+<openerp>
+   <data>
+       <record id="electricals2_product_template_tree_view" model= "ir.ui.view">
+          <field name="inherit_id" ref="product.product_template_tree_view" />
+          <field name="model">product.template</field>
+          <field name="arch" type= "xml">
+             <xpath expr="//field[@name='categ_id']" position="before">
+                <field name="supplier_name"/>
+                <field name="servingsize"/>
+                <field name="lastupdated"/>
+                <field name="is_extension"/>
+              </xpath>
+          </field>
+       </record>
+
+     <record id="electricals2_product_template_form_view" model= "ir.ui.view">
+           <field name="inherit_id" ref="product.product_template_only_form_view" />
+           <field name="model">product.template</field>
+           <field name="arch" type= "xml">
+                 <xpath expr="//field[@name='list_price']" position="after">
+                      <field name="supplier_name"/>
+                      <field name="servingsize"/>
+                      <field name="lastupdated"/>
+                      <field name="is_extension"/>
+                 </xpath>
+           </field>
+       </record>
+       <record id="electricals2_product_template_tree_view_1" model="ir.ui.view">
+          <field name="name">res.partner</field>
+          <field name="model">res.partner</field>
+          <field name="inherit_id" ref="base.view_partner_form" />
+          <field name="arch" type="xml">
+             <xpath expr="//field[@name='email']" position="after">
+                <field name="Date_Of_Birth" />
+             </xpath>
+          </field>
+       </record>    
+
+
+
+
+        <record id= "product.product_template_action_electricals2" model= "ir.actions.act_window" >
+           <field name="name" >Extensions</field>
+           <field name="type" >ir.actions.act_window</field>
+           <field name="res_model" >product.template</field>
+           <field name="view_mode" >tree,kanban,form</field>
+           <field name="view_type" >form</field>
+           <field name="view_id" ref= "product.product_template_tree_view" />
+           <field name="context" >{"search_default_filter_to_sell" :1, "default_is_extension" : True}</field>
+           <field name="domain">[('categ_id.name','=','Extensions')]</field>
+           <field name="help" type="html" >
+              <p class="oe_view_nocontent_create" >
+                 Click to define a new product.
+              </p><p>
+                 You must define a product for everything you sell, whether it's a physical problem.
+              </p><p>
+                 The product form contains information to simplify the sale process: price.
+              </p>
+           </field>
+        </record>
+
+       <record id= "meal_action_electricals2" model= "ir.actions.act_window" >
+          <field name="name" >Meals</field>
+          <field name="type" >ir.actions.act_window</field>
+          <field name="res_model" >res.users.meal</field>
+          <field name="view_mode" >tree,kanban,form</field>
+          <field name="view_type" >form</field>
+          <field name="help" type="html" >
+             <p class="oe_view_nocontent_create" >
+                Click to define a new meal.
+             </p>
+          </field>
+       </record>
+       
+
+     <record id="electricals2_meal_form_view" model= "ir.ui.view">
+         <field name="model">res.users.meal</field>
+            <field name="arch" type= "xml">
+               <form editable= "bottom">
+                  <groups>
+                     <label for="name" string="Name"/>
+                        <field name="name"/>
+                     <label for="meal_date" string="Meal Date"/>
+                        <field name="meal_date"/>
+                     <label for="user_id" string="User ID"/>
+                        <field name="user_id"/>
+                     <label for="totalservingsize" string="Total Serving Size"/>
+                        <field name="totalservingsize"/>
+                     <label for="notes" string="Notes"/>
+                        <field name="notes"/>
+                  </groups> 
+                     <notebook>
+                        <page name="mealitems" string="Meal Items">
+                           <field name="item_ids" widget="one2many_list">
+                              <tree>
+                                 <field name="item_id"/>
+                                 <field name="supplier_name"/>
+                                 <field name="servings"/>
+                                 <field name= "notes"/>
+                              </tree>
+                           </field>
+                        </page>
+                     </notebook>
+               </form>
+            </field>
+     </record>
+
+
+     <record id="electricals2_meal_tree_view" model= "ir.ui.view">
+        <field name="model">res.users.meal</field>
+        <field name="arch" type= "xml">
+           <tree>  
+              <field name="name"/>
+              <field name="meal_date"/>
+              <field name="user_id"/>
+              <field name="totalservingsize" sum="Total Serving Size"/>
+           </tree>
+        </field>
+     </record>
+
+
+
+     <menuitem action= "product.product_template_action_electricals2"
+          id= "menu_product_template_action_electricals"
+             parent= "base.menu_sales" sequence= "14" />
+
+
+     <menuitem action= "meal_action_electricals2"
+           id= "menu_meal_action_electricals2"
+                parent= "base.menu_sales" sequence= "15" />
+
+  </data>
+</openerp>
